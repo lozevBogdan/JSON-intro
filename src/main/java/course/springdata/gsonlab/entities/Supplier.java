@@ -7,10 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -45,7 +42,7 @@ public class Supplier extends BaseEntity {
         isImporter = importer;
     }
 
-    @OneToMany(mappedBy = "supplier")
+    @OneToMany(mappedBy = "supplier",fetch = FetchType.EAGER)
     public List<Part> getParts() {
         return parts;
     }

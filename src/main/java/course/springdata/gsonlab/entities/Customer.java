@@ -1,5 +1,7 @@
 package course.springdata.gsonlab.entities;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,10 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import net.bytebuddy.agent.builder.AgentBuilder;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "customers")
@@ -37,11 +36,13 @@ public class Customer extends BaseEntity {
     }
 
     @Column(name = "birth_date")
+
     public String getBirthDate() {
         return birthDate;
     }
 
     public void setBirthDate(String birthDate) {
+
         this.birthDate = birthDate;
     }
 
