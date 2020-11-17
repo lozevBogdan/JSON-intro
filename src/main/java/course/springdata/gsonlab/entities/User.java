@@ -62,7 +62,7 @@ public class User extends BaseEntity {
         this.friends = friends;
     }
 
-    @OneToMany(mappedBy = "buyer",targetEntity = Product.class)
+    @OneToMany(mappedBy = "buyer",targetEntity = Product.class,fetch = FetchType.EAGER)
     public Set<Product> getSoldProducts() {
         return soldProducts;
     }
@@ -71,7 +71,7 @@ public class User extends BaseEntity {
         this.soldProducts = soldProducts;
     }
 
-    @OneToMany(mappedBy = "seller",targetEntity = Product.class)
+    @OneToMany(mappedBy = "seller",targetEntity = Product.class,fetch = FetchType.EAGER)
     public Set<Product> getBoughtProducts() {
         return boughtProducts;
     }

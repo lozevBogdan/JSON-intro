@@ -1,6 +1,7 @@
 package course.springdata.gsonlab.entities;
 
 
+import com.google.gson.annotations.Expose;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -11,7 +12,9 @@ import java.util.Set;
 @Table(name = "products")
 public class Product extends BaseEntity {
 
+    @Expose
     private String name;
+    @Expose
     private BigDecimal price;
     private User buyer;
     private User seller;
