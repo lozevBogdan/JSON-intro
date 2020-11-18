@@ -2,6 +2,7 @@ package course.springdata.gsonlab.entities;
 
 
 import lombok.*;
+import org.springframework.data.repository.cdi.Eager;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -65,10 +66,8 @@ public class Part extends BaseEntity {
     }
 
 
-    @ManyToMany
-    @JoinTable(name = "parts_cars",
-            joinColumns = @JoinColumn(name = "part_id",referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "car_id", referencedColumnName = "id"))
+    @ManyToMany(mappedBy = "parts",targetEntity = Car.class,
+            fetch = FetchType.EAGER)
     public List<Car> getCar() {
         return car;
     }

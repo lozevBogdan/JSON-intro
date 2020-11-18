@@ -6,5 +6,6 @@ public interface CarsServise {
 
     String seedCarsData() throws IOException;
     String carsFromMake(String make) throws IOException;
+    String carsWithListOfParts() throws IOException;
 
 }

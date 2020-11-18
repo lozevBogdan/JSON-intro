@@ -1,8 +1,7 @@
 package course.springdata.gsonlab.servises.impl;
 
 import com.google.gson.Gson;
-import course.springdata.gsonlab.dtos.CarSeedDto;
-import course.springdata.gsonlab.dtos.CarViewDto;
+import course.springdata.gsonlab.dtos.*;
 import course.springdata.gsonlab.entities.Car;
 import course.springdata.gsonlab.entities.Part;
 import course.springdata.gsonlab.repositories.CarsRepository;
@@ -13,15 +12,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.sound.sampled.spi.AudioFileWriter;
+import javax.transaction.Transactional;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @Service
+@Transactional
 public class CarsServiceImpl implements CarsServise {
 
     private final String CARSDATA_PATH = "src/main/resources/cars.json";
@@ -40,6 +39,7 @@ public class CarsServiceImpl implements CarsServise {
     }
 
     @Override
+
     public String seedCarsData() throws IOException {
 
         String content = String.join("",
@@ -48,15 +48,20 @@ public class CarsServiceImpl implements CarsServise {
         CarSeedDto [] carSeedDto =
                 this.gson.fromJson(content,CarSeedDto[].class);
 
+        List<Car> seededCars = new ArrayList<>();
+
         for (CarSeedDto seedDto : carSeedDto) {
 
             Car car = this.modelMapper.map(seedDto,Car.class);
 
             car.setParts(getRandomListOfParts());
 
+            seededCars.add(car);
             this.carsRepository.saveAndFlush(car);
 
         }
+
+       // List<Car> savedCars = this.carsRepository.findAll();
 
         return "Successfully seeded Cars data in DB!";
     }
@@ -83,6 +88,50 @@ public class CarsServiceImpl implements CarsServise {
 
         fileWriter.write(toJson);
         fileWriter.close();
+
+        return toJson;
+    }
+
+    @Override
+    public String carsWithListOfParts() throws IOException {
+
+        List<Car> cars = this.carsRepository.getAllCars();
+
+        List<CarInfoDto> carInfoDtoList = new ArrayList<>();
+
+        for (Car car : cars) {
+
+            List<Part> partList = car.getParts();
+            List<PartsViewDto> partsViewDtoList = new ArrayList<>();
+
+            for (Part part : partList) {
+                PartsViewDto partsViewDto =
+                this.modelMapper.map(part,PartsViewDto.class);
+                partsViewDtoList.add(partsViewDto);
+            }
+
+
+            CarInfoDto carInfoDto =
+                    this.modelMapper.map(car,CarInfoDto.class);
+
+            carInfoDto.setParts(partsViewDtoList);
+
+            carInfoDtoList.add(carInfoDto);
+
+        }
+
+
+        CarInfo carInfo = new CarInfo();
+        carInfo.setCars(carInfoDtoList);
+
+        String toJson = this.gson.toJson(carInfo);
+
+        FileWriter fileWriter = new FileWriter("cars-and-parts.json");
+        fileWriter.write(toJson);;
+        fileWriter.close();
+
+
+
 
         return toJson;
     }

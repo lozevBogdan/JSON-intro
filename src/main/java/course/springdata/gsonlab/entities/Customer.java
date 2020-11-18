@@ -8,6 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import net.bytebuddy.agent.builder.AgentBuilder;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 
@@ -16,11 +18,9 @@ import javax.persistence.*;
 public class Customer extends BaseEntity {
 
     private String name;
-    private String birthDate;
-    private boolean isYongDriver;
-   // private List<Car> cars;
-
-
+    private LocalDateTime birthDate;
+    private boolean isYoungDriver;
+    private List<Car> cars;
 
     public Customer() {
     }
@@ -37,31 +37,32 @@ public class Customer extends BaseEntity {
 
     @Column(name = "birth_date")
 
-    public String getBirthDate() {
+    public LocalDateTime getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(String birthDate) {
+    public void setBirthDate(LocalDateTime birthDate) {
 
         this.birthDate = birthDate;
     }
 
     @Column(name = "is_young_driver")
-    public boolean isYongDriver() {
-        return isYongDriver;
+    public boolean isYoungDriver() {
+        return isYoungDriver;
     }
 
-    public void setYongDriver(boolean yongDriver) {
-        isYongDriver = yongDriver;
+    public void setYoungDriver(boolean youngDriver) {
+        isYoungDriver = youngDriver;
     }
 
-//
-//    @OneToMany
-//    public List<Car> getCars() {
-//        return cars;
-//    }
-//
-//    public void setCars(List<Car> cars) {
-//        this.cars = cars;
-//    }
+
+    @OneToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
+    public List<Car> getCars() {
+        return cars;
+    }
+
+    public void setCars(List<Car> cars) {
+        this.cars = cars;
+    }
 }

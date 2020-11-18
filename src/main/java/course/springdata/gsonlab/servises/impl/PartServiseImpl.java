@@ -12,6 +12,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.Random;
 
 @Service
+@Transactional
 public class PartServiseImpl implements PartsService {
 
 
@@ -41,6 +43,7 @@ public class PartServiseImpl implements PartsService {
     }
 
     @Override
+
     public String seedPartData() throws IOException {
 
         String content = String.join("",

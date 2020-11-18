@@ -10,7 +10,7 @@ public class CustomerSeedDto {
     @Expose
     private String name;
     @Expose
-    private String birthDate;
+    private LocalDateTime birthDate;
     @Expose
     private  boolean isYoungDriver;
 
@@ -25,11 +25,11 @@ public class CustomerSeedDto {
         this.name = name;
     }
 
-    public String getBirthDate() {
+    public LocalDateTime getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(String birthDate) {
+    public void setBirthDate(LocalDateTime birthDate) {
         this.birthDate = birthDate;
     }
 
